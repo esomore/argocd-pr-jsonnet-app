@@ -1,6 +1,5 @@
-# action.yml
-name: 'Deployment'
-description: 'Deploy argocd application from jsonnet compiled manifests'
+name: 'ArgoCD PR Jsonnet Aplication'
+description: 'Deploy argocd application running jsonnet compiled manifests'
 inputs:
   github-pat:
     description: 'secrets.GITHUB_PAT'
@@ -42,4 +41,3 @@ runs:
     - ${{ inputs.domain }}
     - ${{ inputs.image }}
     - ${{ inputs.tag }}
-    
