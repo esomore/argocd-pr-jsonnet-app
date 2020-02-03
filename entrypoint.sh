@@ -19,20 +19,20 @@ echo ">>>> kubeconfig created"
 
 git config --local user.name "GitHub Action"
 git config --local user.email "action@github.com"
-git remote set-url origin https://x-access-token:${{secrets.GITHUB_PAT}}@github.com/${ORG}/${INFRA_REPO}
+git remote set-url origin https://x-access-token:${secrets.GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}
 git fetch --all
 
 echo ">>>> Compiling manifests for"
-echo "ref $PR_REF"
-echo "cluster $CLUSTER"
-echo "domain $DOMAIN"
-echo "image $IMAGE:$TAG"
+echo "ref ${PR_REF}"
+echo "cluster ${CLUSTER}"
+echo "domain ${DOMAIN}"
+echo "image ${IMAGE}:${TAG}"
 
 cd jsonnet/${ORG}
 ##
 # checking if this is a feature branch or release
 REGEX="[a-zA-Z]+-[0-9]{1,5}"
-if [[ $PR_REF =~ $REGEX ]]; then
+if [[ ${PR_REF} =~ ${REGEX} ]]; then
   ##
   # If branch does not exist create it
   export BRANCH=${PR_REF:11}
@@ -48,11 +48,11 @@ elif [[ ${PR_REF:11} = "develop" ]]; then
   export BRANCH=master
   git checkout master
 else
-  echo "<<<< $PR_REF cannot be deployed, it is not a feature branch nor a release"
+  echo "<<<< ${PR_REF} cannot be deployed, it is not a feature branch nor a release"
 fi
 
 ## compile manifests and add changes to git
-docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) -e CLUSTER=$CLUSTER -e DOMAIN=$DOMAIN -e NAMESPACE=$NAMESPACE -e IMAGE=$IMAGE -e TAG=$TAG quay.io/coreos/jsonnet-ci ./compile.sh
+docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) -e CLUSTER=${CLUSTER} -e DOMAIN=${DOMAIN} -e NAMESPACE=${NAMESPACE} -e IMAGE=${IMAGE} -e TAG=${TAG} quay.io/coreos/jsonnet-ci ./compile.sh
 git add -A
           
 ## If there is nothing to commit exit without fail to continue
