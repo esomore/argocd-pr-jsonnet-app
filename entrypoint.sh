@@ -12,7 +12,7 @@ TAG=${9}
 
 echo "<<<< Cloning infrastructure repo ${ORG}/${INFRA_REPO}"
 git clone https://${GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}.git
-cd infrastructure
+cd infrastructure && ls -l && pwd
 
 echo ${KUBECONFIG} | base64 -d > ./kubeconfig.yaml
 echo ">>>> kubeconfig created"
@@ -53,6 +53,7 @@ fi
 
 ## compile manifests and add changes to git
 cd jsonnet/${ORG}
+ls -la && pwd
 ./compile
 git add -A
           
