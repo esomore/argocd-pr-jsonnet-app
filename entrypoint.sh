@@ -43,12 +43,14 @@ if [[ ${PR_REF} =~ ${REGEX} ]]; then
   export NAMESPACE=$(echo ${BASH_REMATCH[0]} |  tr '[:upper:]' '[:lower:]')
 
 ## infrastrucure branch is using master
-elif [[ ${PR_REF} = "develop" ]]; then
+elif [[ ${PR_REF} = "refs/heads/develop" ]]; then
   export NAMESPACE=staging
   export BRANCH=master
   git checkout master
+
 else
   echo "<<<< ${PR_REF} cannot be deployed, it is not a feature branch nor a release"
+  exit 0
 fi
 
 ## compile manifests and add changes to git
@@ -61,14 +63,6 @@ git add -A
 # so there will be no changes in the compiled manifests since no new docker image created
 git commit -am "recompiled deployment manifests" || exit 0
 git push --set-upstream origin ${BRANCH}
-
-REGEX="[a-zA-Z]+-[0-9]{1,5}"
-if [[ ${PR_REF} =~ ${REGEX} ]]; then
-  export NAMESPACE=$(echo ${BASH_REMATCH[0]} |  tr '[:upper:]' '[:lower:]')
-else
-  echo ">>>> ${PR_REF} is not a feature branch"
-  exit 0
-fi
 
 if [[ $(kubectl --kubeconfig=/kubeconfig.yaml -n argocd get application ${NAMESPACE}) ]]; then 
   echo ">>>> Application exist, OK!"
@@ -88,7 +82,7 @@ spec:
   source:
     path: jsonnet/${ORG}/clusters/${CLUSTER}/manifests
     repoURL: https://github.com/${ORG}/${INFRA_REPO}
-    targetRevision: ${PR_REF}
+    targetRevision: ${PR_REF:11}
   syncPolicy:
     automated: {}
 EOF
