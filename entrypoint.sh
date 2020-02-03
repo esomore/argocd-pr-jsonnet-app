@@ -12,7 +12,7 @@ TAG=${9}
 
 echo "<<<< Cloning infrastructure repo ${ORG}/${INFRA_REPO}"
 git clone https://${GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}.git
-cd infrastructure && ls -l && pwd
+cd infrastructure
 
 echo ${KUBECONFIG} | base64 -d > ./kubeconfig.yaml
 echo ">>>> kubeconfig created"
@@ -53,8 +53,7 @@ fi
 
 ## compile manifests and add changes to git
 cd jsonnet/${ORG}
-ls -la && pwd
-./compile.sh
+CLUSTER=${CLUSTER} DOMAIN=${DOMAIN} NAMESPACE=${NAMESPACE} IMAGE=${IMAGE} TAG=${TAG} ./compile.sh
 git add -A
           
 ## If there is nothing to commit exit without fail to continue
