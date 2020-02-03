@@ -82,7 +82,7 @@ spec:
   source:
     path: jsonnet/${ORG}/clusters/${CLUSTER}/manifests
     repoURL: https://github.com/${ORG}/${INFRA_REPO}
-    targetRevision: ${PR_REF:11}
+    targetRevision: ${BRANCH}
   syncPolicy:
     automated: {}
 EOF
