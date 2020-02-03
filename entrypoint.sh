@@ -54,7 +54,7 @@ fi
 ## compile manifests and add changes to git
 cd jsonnet/${ORG}
 ls -la
-docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) -e CLUSTER=${CLUSTER} -e DOMAIN=${DOMAIN} -e NAMESPACE=${NAMESPACE} -e IMAGE=${IMAGE} -e TAG=${TAG} quay.io/coreos/jsonnet-ci ./compile.sh
+docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) -e CLUSTER=${CLUSTER} -e DOMAIN=${DOMAIN} -e NAMESPACE=${NAMESPACE} -e IMAGE=${IMAGE} -e TAG=${TAG} quay.io/coreos/jsonnet-ci ls -la
 git add -A
           
 ## If there is nothing to commit exit without fail to continue
