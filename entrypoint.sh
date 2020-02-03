@@ -54,7 +54,7 @@ fi
 ## compile manifests and add changes to git
 cd jsonnet/${ORG}
 ls -la && pwd
-./compile
+./compile.sh
 git add -A
           
 ## If there is nothing to commit exit without fail to continue
