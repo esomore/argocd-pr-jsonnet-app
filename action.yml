@@ -35,7 +35,7 @@ runs:
     - ${{ inputs.github-pat }}
     - ${{ inputs.kubeconfig }}
     - ${{ inputs.org }}
-    - ${{ inputs.infa-repo}}
+    - ${{ inputs.infra-repo}}
     - ${{ inputs.pr-ref }}
     - ${{ inputs.cluster }}
     - ${{ inputs.domain }}
