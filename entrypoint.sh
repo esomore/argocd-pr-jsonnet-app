@@ -19,7 +19,7 @@ echo ">>>> kubeconfig created"
 
 git config --local user.name "GitHub Action"
 git config --local user.email "action@github.com"
-git remote set-url origin https://x-access-token:${secrets.GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}
+git remote set-url origin https://x-access-token:${GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}
 git fetch --all
 
 echo ">>>> Compiling manifests for"
@@ -35,7 +35,7 @@ REGEX="[a-zA-Z]+-[0-9]{1,5}"
 if [[ ${PR_REF} =~ ${REGEX} ]]; then
   ##
   # If branch does not exist create it
-  export BRANCH=${PR_REF:11}
+  export BRANCH=${PR_REF}
   git checkout ${BRANCH} || git checkout -b ${BRANCH}
 
   ##
@@ -43,7 +43,7 @@ if [[ ${PR_REF} =~ ${REGEX} ]]; then
   export NAMESPACE=$(echo ${BASH_REMATCH[0]} |  tr '[:upper:]' '[:lower:]')
 
 ## infrastrucure branch is using master
-elif [[ ${PR_REF:11} = "develop" ]]; then
+elif [[ ${PR_REF} = "develop" ]]; then
   export NAMESPACE=staging
   export BRANCH=master
   git checkout master
@@ -87,7 +87,7 @@ spec:
   source:
     path: jsonnet/${ORG}/clusters/${CLUSTER}/manifests
     INFRA_REPOURL: https://github.com/${ORG}/${INFRA_REPO}
-    targetRevision: ${PR_REF:11}
+    targetRevision: ${PR_REF}
   syncPolicy:
     automated: {}
 EOF
