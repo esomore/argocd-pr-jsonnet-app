@@ -53,7 +53,7 @@ fi
 
 ## compile manifests and add changes to git
 cd jsonnet/${ORG}
-CLUSTER=${CLUSTER} -e DOMAIN=${DOMAIN} -e NAMESPACE=${NAMESPACE} -e IMAGE=${IMAGE} -e TAG=${TAG} ./compile
+./compile
 git add -A
           
 ## If there is nothing to commit exit without fail to continue
