@@ -1,4 +1,4 @@
-name: 'ArgoCD PR Jsonnet Aplication'
+name: 'ArgoCD PR Jsonnet Application'
 description: 'Deploy argocd application running jsonnet compiled manifests'
 inputs:
   github-pat:
