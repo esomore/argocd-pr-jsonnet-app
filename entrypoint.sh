@@ -10,15 +10,15 @@ DOMAIN=${7}
 IMAGE=${8}
 TAG=${9}
 
-echo "<<<< Cloning infrastructure INFRA_REPO"
-git clone https://${GITHUB_PAT}@github.com/${INFRA_REPO}.git
+echo "<<<< Cloning infrastructure repo ${ORG}/${INFRA_REPO}"
+git clone https://${GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}.git
 
 echo ${KUBECONFIG} | base64 -d > ./kubeconfig.yaml
 echo ">>>> kubeconfig created"
 
 git config --local user.name "GitHub Action"
 git config --local user.email "action@github.com"
-git remote set-url origin https://x-access-token:${{secrets.GITHUB_PAT}}@github.com/${INFRA_REPO}
+git remote set-url origin https://x-access-token:${{secrets.GITHUB_PAT}}@github.com/${ORG}/${INFRA_REPO}
 git fetch --all
 
 echo ">>>> Compiling manifests for"
@@ -85,7 +85,7 @@ spec:
   project: default
   source:
     path: jsonnet/${ORG}/clusters/${CLUSTER}/manifests
-    INFRA_REPOURL: https://github.com/${INFRA_REPO}
+    INFRA_REPOURL: https://github.com/${ORG}/${INFRA_REPO}
     targetRevision: ${PR_REF:11}
   syncPolicy:
     automated: {}
