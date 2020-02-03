@@ -14,7 +14,7 @@ echo "<<<< Cloning infrastructure repo ${ORG}/${INFRA_REPO}"
 git clone https://${GITHUB_PAT}@github.com/${ORG}/${INFRA_REPO}.git
 cd infrastructure
 
-echo ${KUBECONFIG} | base64 -d > ./kubeconfig.yaml
+echo ${KUBECONFIG} | base64 -d > /kubeconfig.yaml
 echo ">>>> kubeconfig created"
 
 git config --local user.name "GitHub Action"
@@ -70,11 +70,11 @@ else
   exit 0
 fi
 
-if [[ $(kubectl --kubeconfig=./kubeconfig.yaml -n argocd get application ${NAMESPACE}) ]]; then 
+if [[ $(kubectl --kubeconfig=/kubeconfig.yaml -n argocd get application ${NAMESPACE}) ]]; then 
   echo ">>>> Application exist, OK!"
 else
   echo ">>>> Creating Application"
-  kubectl --kubeconfig=./kubeconfig.yaml -n argocd apply -f -<<EOF
+  kubectl --kubeconfig=/kubeconfig.yaml -n argocd apply -f -<<EOF
 kind: Application
 apiVersion: argoproj.io/v1alpha1
 metadata:
