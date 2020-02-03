@@ -1,0 +1,45 @@
+# action.yml
+name: 'Deployment'
+description: 'Deploy argocd application from jsonnet compiled manifests'
+inputs:
+  github-pat:
+    description: 'secrets.GITHUB_PAT'
+    required: true
+  kubeconfig:
+    description: 'secrets.ALPHA_KUBECTL'
+    required: true
+  org:
+    description: 'github orginization'
+    required: true
+  infra-repo:
+    description: 'infra repo name'
+    required: true
+  pr-ref:
+    description: 'github.event.pull_request.head.ref'
+    required: true
+  cluster:
+    description: 'github.event.deployment.environment'
+    required: true
+  domain:
+    description: 'domain name for the compiled application'
+    required: true
+  image:
+    description: 'docker image name for the compiled application manifests'
+    required: true
+  tag:
+    description: 'docker image tag for the compiled application manifets'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.github-pat }}
+    - ${{ inputs.kubeconfig }}
+    - ${{ inputs.org }}
+    - ${{ inputs.infa-repo}}
+    - ${{ inputs.pr-ref }}
+    - ${{ inputs.cluster }}
+    - ${{ inputs.domain }}
+    - ${{ inputs.image }}
+    - ${{ inputs.tag }}
+    
