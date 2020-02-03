@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash
 
 GITHUB_PAT=${1}
 KUBECONFIG=${2}
