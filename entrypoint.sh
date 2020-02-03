@@ -28,7 +28,7 @@ echo "cluster ${CLUSTER}"
 echo "domain ${DOMAIN}"
 echo "image ${IMAGE}:${TAG}"
 
-cd jsonnet/${ORG}
+
 ##
 # checking if this is a feature branch or release
 REGEX="[a-zA-Z]+-[0-9]{1,5}"
@@ -52,6 +52,8 @@ else
 fi
 
 ## compile manifests and add changes to git
+cd jsonnet/${ORG}
+ls -la
 docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) -e CLUSTER=${CLUSTER} -e DOMAIN=${DOMAIN} -e NAMESPACE=${NAMESPACE} -e IMAGE=${IMAGE} -e TAG=${TAG} quay.io/coreos/jsonnet-ci ./compile.sh
 git add -A
           
