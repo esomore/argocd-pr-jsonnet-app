@@ -68,7 +68,9 @@ if [[ $(kubectl --kubeconfig=/kubeconfig.yaml -n argocd get application ${NAMESP
   echo ">>>> Application exist, OK!"
 else
   echo ">>>> Creating Application"
-  kubectl --kubeconfig=/kubeconfig.yaml -n argocd apply -f -<<EOF
+fi
+
+kubectl --kubeconfig=/kubeconfig.yaml -n argocd apply -f -<<EOF
 kind: Application
 apiVersion: argoproj.io/v1alpha1
 metadata:
@@ -86,4 +88,3 @@ spec:
   syncPolicy:
     automated: {}
 EOF
-fi
