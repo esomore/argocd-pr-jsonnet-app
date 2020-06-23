@@ -28,11 +28,17 @@ echo "cluster ${CLUSTER}"
 echo "domain ${DOMAIN}"
 echo "image ${IMAGE}:${TAG}"
 
+## Deploy to staging if branch is develop, release, main or master
+## Note: infrastrucure branch is using master
+if [[ ${PR_REF} =~ ^refs/heads/(master|develop|release|main)$ ]]; then
+  export NAMESPACE=staging
+  export BRANCH=master
+  git checkout master
 
 ##
 # checking if this is a feature branch or release
 REGEX="[a-zA-Z]+-[0-9]{1,5}"
-if [[ ${PR_REF} =~ ${REGEX} ]]; then
+elif [[ ${PR_REF} =~ ${REGEX} ]]; then
   ##
   # If branch does not exist create it
   export BRANCH=${PR_REF}
@@ -41,12 +47,6 @@ if [[ ${PR_REF} =~ ${REGEX} ]]; then
   ##
   # set namespace as jira issue id extracted from branch name and make sure it is lowercase
   export NAMESPACE=$(echo ${BASH_REMATCH[0]} |  tr '[:upper:]' '[:lower:]')
-
-## infrastrucure branch is using master
-elif [[ ${PR_REF} = "refs/heads/develop" ]]; then
-  export NAMESPACE=staging
-  export BRANCH=master
-  git checkout master
 
 else
   echo "<<<< ${PR_REF} cannot be deployed, it is not a feature branch nor a release"
