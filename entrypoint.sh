@@ -28,6 +28,8 @@ echo "cluster ${CLUSTER}"
 echo "domain ${DOMAIN}"
 echo "image ${IMAGE}:${TAG}"
 
+REGEX="[a-zA-Z]+-[0-9]{1,5}"
+
 ## Deploy to staging if branch is develop, release, main or master
 ## Note: infrastrucure branch is using master
 if [[ ${PR_REF} =~ ^refs/heads/(master|develop|release|main)$ ]]; then
@@ -37,7 +39,6 @@ if [[ ${PR_REF} =~ ^refs/heads/(master|develop|release|main)$ ]]; then
 
 ##
 # checking if this is a feature branch or release
-REGEX="[a-zA-Z]+-[0-9]{1,5}"
 elif [[ ${PR_REF} =~ ${REGEX} ]]; then
   ##
   # If branch does not exist create it
